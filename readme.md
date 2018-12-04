@@ -58,7 +58,13 @@
 #### 1、git pull origin master
 #### 2、git rm -r --cached "文件名"
 #### 3、git commit -m "信息"
-#### 4、git push -u origin master   <br/><br/>
+#### 4、git push -u origin master   
+### 合并远程仓库的分支
+#### 1、git checkout 分支名
+#### 2、git pull origin 分支名
+#### 3、git checkout master  
+#### 4、git merge 分支名  
+#### 5、git push origin master   <br/><br/>
 # 电商项目-需求分析  
 ## 核心-购买
 ### 一、用户模块
