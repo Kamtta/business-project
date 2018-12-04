@@ -121,13 +121,13 @@
 ### 八、线上部署
 #### 阿里云部署  <br/><br/>
 # --------2018-12-04----------
-##数据库设计
-###创建数据库
+## 数据库设计
+### 创建数据库
 ```
 create database business;
 use business;
 ```
-###用户表
+### 用户表
 ```
 create table user(
 `id`  int(11)  not null  auto_increment comment '用户id',
@@ -144,7 +144,7 @@ PRIMARY KEY(`id`),
 UNIQUE KEY`user_name_index`(`username`)USING BTREE
  )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 ```
-###类别表
+### 类别表
 ```
 create table category(
 `id`         int(11)  not null   auto_increment comment '类别id',
@@ -168,7 +168,7 @@ PRIMARY KEY(`id`)
 p系列       4    8           6
 mate系列    4    9           6
 ```
-###商品表
+### 商品表
 ```
 create table product(
 `id`            int(11)  not null auto_increment comment '商品id',
@@ -186,7 +186,7 @@ create table product(
 PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 ```
-###购物车表
+### 购物车表
 ```
 create table cart(
 `id`      int(11)   not null auto_increment comment '购物车id',
@@ -200,7 +200,7 @@ PRIMARY KEY(`id`),
 KEY `user_id_index`(`user_id`) USING BTREE
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 ```
-###订单表
+### 订单表
 ```
 create table e_order(
 `id`       int(11)      not null auto_increment comment '订单id，主键',
@@ -221,7 +221,7 @@ PRIMARY KEY(`id`),
 UNIQUE KEY `order_no_index`(`order_no`)USING BTREE
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 ```
-###订单明细表
+### 订单明细表
 ```
 create table order_item(
 `id`        int(11)    not null  auto_increment  comment '订单明细id,主键',
@@ -240,7 +240,7 @@ KEY `order_no_index`(`order_no`)USING BTREE,
 KEY `order_no_user_id_index`(`order_no`,`user_id`)USING BTREE
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 ```
-###支付表
+### 支付表
 ```
 create table payinfo(
  `id`           int(11)    not null  auto_increment comment '主键',
@@ -254,7 +254,7 @@ create table payinfo(
   PRIMARY KEY(`id`)
  )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
  ```
- ###地址表
+ ### 地址表
  ```
  create table shipping(
  `id`       int(11)      not null  auto_increment,
@@ -273,8 +273,8 @@ create table payinfo(
  )ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
  ```
  <br/><br/>
- ##笔记
- ###项目架构--四层架构
+ ## 笔记
+ ### 项目架构--四层架构
 ```
 1、视图层
 2、控制层Controller
