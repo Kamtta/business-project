@@ -31,6 +31,7 @@
 #### git log 查看提交commited的日记信息
 #### git reset --hard 日记的唯一标识   提交版本的回退
 #### git branch 查看分支（前面带着*，表示当前指向的分支）
+#### git branch  分支名  创建分支（但不进行切换）
 #### git checkout -b dev 创建并切换到dev分支
 #### 切换分支：git checkout 分支名
 #### 拉取：git pull origin master
