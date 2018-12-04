@@ -32,6 +32,7 @@
 #### git reset --hard 日记的唯一标识   提交版本的回退
 #### git branch 查看分支（前面带着*，表示当前指向的分支）
 #### git checkout -b dev 创建并切换到dev分支
+#### git clone 仓库地址 cloning to 本地仓库地址  克隆仓库 
 #### 切换分支：git checkout 分支名
 #### 拉取：git pull origin master
 #### 提交：git push -u origin master(向master分支提交，第一次提交使用-u,接下来都不使用)
@@ -88,7 +89,7 @@
 #### 删除购物车商品
 #### 全选/取消全选
 #### 单选/取消单选
-####看购物车中商品数量
+#### 看购物车中商品数量
 ### 五、地址模块
 #### 添加地址
 #### 修改地址
