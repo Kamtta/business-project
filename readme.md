@@ -283,3 +283,91 @@ create table payinfo(
 4、DAO层
 ```
 <br/><br/>
+### mybatis-generator安装配置及使用
+```
+pom配置：
+<!-- mysql驱动包 -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.47</version>
+    </dependency>
+
+  
+    <!--mybatis-generator依赖-->
+    <dependency>
+      <groupId>org.mybatis.generator</groupId>
+      <artifactId>mybatis-generator-core</artifactId>
+      <version>1.3.5</version>
+    </dependency>
+  
+  build配置：
+  在pluginManagement之前配置
+  <plugins>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.6</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <overwrite>true</overwrite>
+                </configuration>
+            </plugin>
+      
+  </plugins>
+  
+  配置db.porperties文件：
+  jdbc.username=root
+  jdbc.password=******
+  jdbc.driver=com.jdbc.mysql.Driver
+  jdbc.url=jdbc:mysql://localhost:3306/business?CharacterEncoding=utf8
+  插件配置：
+  <generatorConfiguration>
+        <property resource="db.properties"/>
+      <!--配置mysql的驱动包jar，本地仓库的jar包位置，全限名-->
+      <classPathEntry location=""/>
+      <context id="context" targetRuntime="MyBatis3Simple">
+          <commentGenerator>
+              <property name="suppressAllComments" value="false"/>
+              <property name="suppressDate" value="true"/>
+          </commentGenerator>
+          <!--配置相关的连接属性，使用el表达式进行获取导进来的db.properties属性值-->
+          <jdbcConnection userId="" password="" driverClass="" connectionURL=""/>
+  
+          <javaTypeResolver>
+              <property name="forceBigDecimals" value="false"/>
+          </javaTypeResolver>
+          <!-- 实体类，前面的包名为实体限定包名，后面为包的位置，如./src/main/java-->
+          <javaModelGenerator targetPackage="" targetProject="">
+              <property name="enableSubPackages" value="false"/>
+              <property name="trimStrings" value="true"/>
+          </javaModelGenerator>
+          <!--配置sql文件,dao层的映射文件，也就是Mapper的包名，后面为包的位置，如./src/main/resources-->
+          <sqlMapGenerator targetPackage="" targetProject="">
+              <property name="enableSubPackages" value="false"/>
+          </sqlMapGenerator>
+          <!--生成Dao接口，dao层的包名，后面为包的位置-->
+          <javaClientGenerator targetPackage="" type="XMLMAPPER" targetProject="">
+              <property name="enableSubPackages" value="false"/>
+          </javaClientGenerator>
+  
+          <!--配置数据表，有几张表就有相应的几个如下单项的配置，tablename对应的数据库表的名字，而domainObjectName则是本地实体类的名字-->
+          <table  tableName="" domainObjectName=""  enableCountByExample="false" enableDeleteByExample="false"
+                 enableSelectByExample="false" enableUpdateByExample="false"/>
+      </context>
+  </generatorConfiguration>
+  
+  在idea的右边显示中点击MavenProject中的plugin中的mybatis-generator进行执行。
+```
+### 项目框架搭建
+```
+1、建立相应的层级关系，相应的包有：service、dao、pojo、utils、commons和controller
+2、将相应的web.xml、spring.xml、springmvc.xml、mybatis.xml等文件进行导入
+3、搭建Tomcat服务器
+```
+### @RestController和@Controller的区别
+```
+@RestController中定义的相关内容返回的是json对象
+@Controller中定义的相关内容返回的是视图对象
+```
+### 在web.xml文件中使用的/是指缺省名，如：在servlet中没有找到相应的方法映射的时候就会自动调用这个方法
