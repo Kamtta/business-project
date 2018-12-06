@@ -36,8 +36,8 @@
       update_time)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
-      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
+      now())
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.dreamTimes.pojo.User">
     <!--
@@ -75,4 +75,30 @@
     update_time
     from user
   </select>
+
+  <select id="checkUsername" parameterType="string" resultType="int">
+    select count(*) from user where username=#{username}
+  </select>
+
+  <select id="selectUserByUsernameAndPassword" parameterType="map" resultMap="BaseResultMap">
+    select id, username, password, email, phone, question, answer, role, create_time,
+    update_time
+    from user where username=#{username} and password=#{password}
+  </select>
+
+  <select id="checkEmail" parameterType="string" resultType="int">
+    select count(*) from user where email=#{email}
+  </select>
+
+  <select id="forget_get_question" parameterType="string" resultType="string">
+    select question from user where username=#{username}
+  </select>
+
+  <select id="forget_check_answer" parameterType="map" resultType="int">
+    select count(*) from user where username=#{username} and question=#{question} and answer=#{answer}
+  </select>
+
+  <update id="forget_reset_password" parameterType="map">
+      update user set password=#{password},update_time=now() where username=#{username}
+  </update>
 </mapper>
