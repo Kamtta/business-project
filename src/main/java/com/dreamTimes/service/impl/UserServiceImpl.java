@@ -130,21 +130,12 @@ public class UserServiceImpl implements IUserService {
         if(StringUtils.isBlank(username) || StringUtils.isBlank(question) || StringUtils.isBlank(answer)){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
-//        step2:判断用户名和问题是否存在
-        ServerResponse serverResponse = check_valid(username,Const.USERNAME);
-        if(serverResponse.isSucess()){
-           return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_EXITS.getStatus(),ResponseCode.USER_NOT_EXITS.getMsg());
-        }
-        String question_result = userMapper.forget_get_question(username);
-        if(StringUtils.isBlank(question_result)){
-            return ServerResponse.createServerResponseByError(ResponseCode.QUESTION_ERROR.getStatus(),ResponseCode.QUESTION_ERROR.getMsg());
-        }
-//        step3:判断答案是否正确
+//        step2:判断答案是否正确
         int answer_result = userMapper.forget_check_answer(username,question,answer);
         if (answer_result <= 0){
             return ServerResponse.createServerResponseByError(ResponseCode.ANSWER_ERROR.getStatus(),ResponseCode.ANSWER_ERROR.getMsg());
         }
-//        step4:返回结果
+//        step3:返回结果
 //        生成UUID唯一标识
         String token = UUID.randomUUID().toString();
 //        将UUID放进guava缓冲区
@@ -165,11 +156,11 @@ public class UserServiceImpl implements IUserService {
         }
 //        step3:使用forgetToken校验是否存在横向越权的情况
         String token = TokenCache.get(username);
-        if (token == null){
+        if (StringUtils.isBlank(token)){
             return ServerResponse.createServerResponseByError(ResponseCode.TOKEN_OUT_DATE.getStatus(),ResponseCode.TOKEN_OUT_DATE.getMsg());
         }
         if(!token.equals(forgetToken)){
-            return ServerResponse.createServerResponseByError(ResponseCode.TOKEN_OUT.getStatus(),ResponseCode.TOKEN_OUT.getMsg());
+            return ServerResponse.createServerResponseByError(ResponseCode.TOKEN_FAIL.getStatus(),ResponseCode.TOKEN_FAIL.getMsg());
         }
 //        step4:重设密码
         int alter_result = userMapper.forget_reset_password(username,MD5Utils.getMD5Code(passwordNew));
@@ -178,5 +169,42 @@ public class UserServiceImpl implements IUserService {
         }
 //        step5:返回结果
         return ServerResponse.createServerResponseBySuccess(Const.ALTER_SUCCESS);
+    }
+
+    @Override
+    public ServerResponse reset_password(String username, String passwordOld, String passwordNew) {
+
+//        step1:非空检验
+        if(StringUtils.isBlank(passwordOld) || StringUtils.isBlank(passwordNew)){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//        step2:判断旧密码是否正确
+        User user = userMapper.selectUserByUsernameAndPassword(username,MD5Utils.getMD5Code(passwordOld));
+        if(user == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PASSWORDOLD_ERROR.getStatus(),ResponseCode.PASSWORDOLD_ERROR.getMsg());
+        }
+//        step3:修改密码
+        user.setPassword(MD5Utils.getMD5Code(passwordNew));
+        int alter_result = userMapper.updateByPrimaryKey(user);
+        if(alter_result <= 0){
+            return ServerResponse.createServerResponseByError(ResponseCode.ALTER_PASSWORD_FAIL.getStatus(),ResponseCode.ALTER_PASSWORD_FAIL.getMsg());
+        }
+//        step4:返回结果
+        return ServerResponse.createServerResponseBySuccess(Const.ALTER_SUCCESS);
+    }
+
+    @Override
+    public ServerResponse update_information(User user) {
+//        step1:非空检验
+        if(user == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//        step2:更新信息
+        int update_result = userMapper.update_information(user);
+        if(update_result <= 0){
+            return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+        }
+//        step3:返回结果
+        return ServerResponse.createServerResponseBySuccess(Const.UPDATE_SUCCESS);
     }
 }

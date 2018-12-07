@@ -100,4 +100,12 @@ public interface UserMapper {
      */
     int forget_reset_password(@Param("username") String username,
                               @Param("password") String password);
+
+
+    /**
+     * 更新个人信息
+     * @param user
+     * @return
+     */
+    int update_information(User user);
 }

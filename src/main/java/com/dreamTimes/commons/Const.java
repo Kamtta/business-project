@@ -18,4 +18,7 @@ public class Const {
 
     public static final String CHECK_SUCCESS = "检验成功";
     public static final String ALTER_SUCCESS = "修改成功";
+
+    public static final String UPDATE_SUCCESS = "更新个人信息成功";
+    public static final String LOGOUT_SUCCESS = "退出成功";
 }

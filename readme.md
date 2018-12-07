@@ -384,3 +384,5 @@ required:默认是true，要求输入value的值，
         如果是false的话，可添可不添
 defaultValue:如果required是false的话，采用这个值，如果是true的话，采用value的值
 ```
+###横向越权：同级别的用户，不能修改其他用户的信息
+###纵向越权：低级别的用户，不能修改高级别用户的信息

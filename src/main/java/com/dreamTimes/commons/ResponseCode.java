@@ -14,9 +14,11 @@ public enum ResponseCode {
     USER_NOT_LOGIN(9,"用户未登陆"),
     QUESTION_ERROR(10,"该用户未设置密保问题"),
     ANSWER_ERROR(11,"问题答案错误"),
-    TOKEN_OUT(12,"token失效"),
+    TOKEN_FAIL(12,"不能修改其他人的密码"),
     ALTER_PASSWORD_FAIL(13,"修改密码失败"),
-    TOKEN_OUT_DATE(14,"无效的token")
+    TOKEN_OUT_DATE(14,"无效的token或者token失效"),
+    PASSWORDOLD_ERROR(15,"旧密码输入错误"),
+    SERVER_ERROR(16,"服务端异常")
 
     ;
     private Integer status;

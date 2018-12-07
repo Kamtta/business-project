@@ -110,4 +110,53 @@ import javax.servlet.http.HttpSession;
     public ServerResponse forget_reset_password(String username,String passwordNew,String forgetToken){
         return iUserService.forget_reset_password(username,passwordNew,forgetToken);
     }
+
+
+    /**
+     * 登录状态中重置密码
+     * @param httpSession
+     * @param passwordOld
+     * @param passwordNew
+     * @return
+     */
+    @RequestMapping(value = "reset_password.do")
+    public ServerResponse reset_password(HttpSession httpSession,String passwordOld,String passwordNew){
+        Object o = httpSession.getAttribute(Const.CURRENT_USER);
+        String username = null;
+        if(o != null && o instanceof User){
+            User user = (User)o;
+            username = user.getUsername();
+        }
+        return iUserService.reset_password(username,passwordOld,passwordNew);
+    }
+
+    /**
+     * 登录状态下更新个人信息
+     * @param httpSession
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "update_information.do")
+    public ServerResponse update_information(HttpSession httpSession,User user){
+        Object o = httpSession.getAttribute(Const.CURRENT_USER);
+        if(o != null && o instanceof User){
+            User u = (User)o;
+            user.setId(u.getId());
+        }
+        return iUserService.update_information(user);
+    }
+
+
+    /**
+     * 退出登录
+     * @return
+     */
+    @RequestMapping(value = "logout.do")
+    public ServerResponse logout(HttpSession session){
+        session.removeAttribute(Const.CURRENT_USER);
+        if (session.getAttribute(Const.CURRENT_USER) == null){
+            return ServerResponse.createServerResponseBySuccess(Const.LOGOUT_SUCCESS);
+        }
+        return ServerResponse.createServerResponseByError(ResponseCode.SERVER_ERROR.getStatus(),ResponseCode.SERVER_ERROR.getMsg());
+    }
 }

@@ -58,4 +58,22 @@ public interface IUserService {
      * @return
      */
     ServerResponse forget_reset_password(String username,String passwordNew,String forgetToken);
+
+
+    /**
+     *登录下的重置密码
+     * @param username
+     * @param passwordOld
+     * @param passwordNew
+     * @return
+     */
+    ServerResponse reset_password(String username,String passwordOld,String passwordNew);
+
+
+    /**
+     * 登录状态下更新个人信息
+     * @param user
+     * @return
+     */
+    ServerResponse update_information(User user);
 }
