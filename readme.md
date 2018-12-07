@@ -375,14 +375,14 @@ pom配置：
 ### 在数据库设计中，冗余字段是指可以通过其他字段可以获取的字段，而在实际的开发中，需要用到冗余字段，是为了提升查询效率
 <br/><br/>
 # ------------------2018-12-05-----------------------
-##笔记
-###在@RestController中，返回的json数据的原理是：涉及的相关实体类，jvm自动去扫描相关的实体类的get方法，如果类中有定义的isXXX()方法，会被认为为get方法，然后返回
-###在写dao层的数据库映射的时候，paramType应该为map类型，在自动集成的xml文件中，返回值的类型应该是ResultMap，名称为上面自动生成的Mapper的名称
-###@RequestParam(value=" required=" defaultValue=")
+## 笔记
+### 在@RestController中，返回的json数据的原理是：涉及的相关实体类，jvm自动去扫描相关的实体类的get方法，如果类中有定义的isXXX()方法，会被认为为get方法，然后返回
+### 在写dao层的数据库映射的时候，paramType应该为map类型，在自动集成的xml文件中，返回值的类型应该是ResultMap，名称为上面自动生成的Mapper的名称
+### @RequestParam(value=" required=" defaultValue=")
 ```
 required:默认是true，要求输入value的值，
         如果是false的话，可添可不添
 defaultValue:如果required是false的话，采用这个值，如果是true的话，采用value的值
 ```
-###横向越权：同级别的用户，不能修改其他用户的信息
-###纵向越权：低级别的用户，不能修改高级别用户的信息
+### 横向越权：同级别的用户，不能修改其他用户的信息
+### 纵向越权：低级别的用户，不能修改高级别用户的信息
