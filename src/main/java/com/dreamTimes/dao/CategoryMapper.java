@@ -1,6 +1,8 @@
 package com.dreamTimes.dao;
 
 import com.dreamTimes.pojo.Category;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface CategoryMapper {
@@ -43,4 +45,20 @@ public interface CategoryMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Category record);
+
+
+    /**
+     * 检查类别明是否存在
+     * @param typeName
+     * @return
+     */
+    int check_typeName(String typeName);
+
+    /**
+     * 查询平级的子类
+     * @param categoryId
+     * @return
+     */
+    List<Category> findChildCategory(Integer categoryId);
+
 }

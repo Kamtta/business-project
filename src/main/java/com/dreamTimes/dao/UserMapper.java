@@ -108,4 +108,5 @@ public interface UserMapper {
      * @return
      */
     int update_information(User user);
+
 }

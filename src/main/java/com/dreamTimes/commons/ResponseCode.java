@@ -18,14 +18,18 @@ public enum ResponseCode {
     ALTER_PASSWORD_FAIL(13,"修改密码失败"),
     TOKEN_OUT_DATE(14,"无效的token或者token失效"),
     PASSWORDOLD_ERROR(15,"旧密码输入错误"),
-    SERVER_ERROR(16,"服务端异常")
+    SERVER_ERROR(16,"服务端异常"),
+    ROLE_ERROR(17,"没有权限进行访问"),
+    CATEGORY_EXITS(18,"类别明已存在"),
+    INSERT_CATEGORY_FAIL(19,"添加类别失败"),
+    CATEGORY_NOT_FOUND(20,"未找到该品类"),
+    CATEGORY_UPDATE_FAIL(21,"更新品类名字失败")
 
     ;
     private Integer status;
     private String msg;
 
-    ResponseCode() {
-    }
+    ResponseCode() {}
 
     ResponseCode(Integer status, String msg) {
         this.status = status;

@@ -4,6 +4,7 @@ public class Const {
     /**
      * 高复用的常量
      */
+//    用户
     public static final Integer SUCCESS_CODE=0;
     public static final Integer ERROR_CODE=1;
 
@@ -21,4 +22,8 @@ public class Const {
 
     public static final String UPDATE_SUCCESS = "更新个人信息成功";
     public static final String LOGOUT_SUCCESS = "退出成功";
+
+    public static final String INSERT_CATEGORY_SUCCESS = "添加类别成功";
+
+    public static final String UPDATE_CATEGORYNAME_SUCCESS = "更新品类名字成功";
 }
