@@ -22,17 +22,21 @@ public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     CategoryMapper categoryMapper;
     @Override
-    public ServerResponse add_category(Integer parentId,String categoryName) {
+    public ServerResponse add_category(User user,Integer parentId,String categoryName) {
 //        step1:非空校验
         if(StringUtils.isBlank(String.valueOf(parentId)) || StringUtils.isBlank(categoryName)){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
-//        step2:判断类别名是否存在
+//        step2:判断是否有权限进行操作
+        if(user.getRole() != Const.USER_ROLE_MANAGE){
+            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
+        }
+//        step3:判断类别名是否存在
         int result = categoryMapper.check_typeName(categoryName);
         if(result > 0){
             return ServerResponse.createServerResponseByError(ResponseCode.CATEGORY_EXITS.getStatus(),ResponseCode.CATEGORY_EXITS.getMsg());
         }
-//        step3:返回结果
+//        step4:返回结果
         Category category = new Category();
         category.setName(categoryName);
         category.setParentId(parentId);
@@ -87,16 +91,12 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ServerResponse get_deep_category(User user, Integer categoryId) {
+    public ServerResponse get_deep_category(Integer categoryId) {
 //        step1：非空校验
         if(StringUtils.isBlank(String.valueOf(categoryId))){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
-//        step2：权限判断
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
-//        step3：查询子节点
+//        step2：查询子节点
         Set<Category> categorySet = Sets.newHashSet();
         categorySet = findAllChildCategory(categorySet,categoryId);
 
@@ -107,7 +107,7 @@ public class CategoryServiceImpl implements ICategoryService {
             Category category = categoryIterator.next();
             integerSet.add(category.getId());
         }
-//        step4：返回结果
+//        step3：返回结果
         return ServerResponse.createServerResponseBySuccess(null,integerSet);
     }
 

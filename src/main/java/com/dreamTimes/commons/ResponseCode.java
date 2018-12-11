@@ -23,8 +23,15 @@ public enum ResponseCode {
     CATEGORY_EXITS(18,"类别明已存在"),
     INSERT_CATEGORY_FAIL(19,"添加类别失败"),
     CATEGORY_NOT_FOUND(20,"未找到该品类"),
-    CATEGORY_UPDATE_FAIL(21,"更新品类名字失败")
-
+    CATEGORY_UPDATE_FAIL(21,"更新品类名字失败"),
+    INSERT_PRODUCT_FAIL(22,"新增产品失败"),
+    UPDATE_PRODUCT_FAIL(23,"更新产品失败"),
+    NOT_FOUND_PRODUCT(24,"查询商品失败"),
+    UPLOAD_PIC_FAIL(25,"上传图片失败"),
+    LIMIT_NUM_SUCCESS(1,"LIMIT_NUM_SUCCESS"),
+    LIMIT_NUM_FAIL(0,"LIMIT_NUM_FAIL"),
+    INSERT_CART_FAIL(28,"加入购物车失败"),
+    UPDATE_FAIL(29,"更新失败")
     ;
     private Integer status;
     private String msg;

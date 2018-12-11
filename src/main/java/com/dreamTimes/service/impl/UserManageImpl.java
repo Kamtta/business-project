@@ -7,9 +7,13 @@ import com.dreamTimes.dao.UserMapper;
 import com.dreamTimes.pojo.User;
 import com.dreamTimes.service.IUserManageService;
 import com.dreamTimes.utils.MD5Utils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserManageImpl implements IUserManageService {
@@ -40,5 +44,20 @@ public class UserManageImpl implements IUserManageService {
 //        step5:返回结果
         user.setPassword("");
         return ServerResponse.createServerResponseBySuccess(null,user);
+    }
+
+    @Override
+    public ServerResponse list(Integer pageNum, Integer pageSize) {
+//        非空校验
+        if(pageNum == null || pageSize == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//        查询所有
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> userList = userMapper.selectAll();
+
+//        返回结果
+        PageInfo pageInfo = new PageInfo(userList);
+        return ServerResponse.createServerResponseBySuccess(null,pageInfo);
     }
 }

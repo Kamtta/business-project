@@ -11,4 +11,12 @@ public interface IUserManageService {
      * @return
      */
     ServerResponse login(String username, String password);
+
+    /**
+     * 用户列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    ServerResponse list( Integer pageNum, Integer pageSize);
 }

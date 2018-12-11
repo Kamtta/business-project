@@ -1,7 +1,10 @@
 package com.dreamTimes.dao;
 
 import com.dreamTimes.pojo.Product;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
+import java.util.Set;
 
 public interface ProductMapper {
     /**
@@ -43,4 +46,24 @@ public interface ProductMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Product record);
+
+
+    /**
+     * 根据商品id、商品名进行查询
+     * @param productId
+     * @param productName
+     * @return
+     */
+    List<Product> findByProductIdAndproductName(@Param("productId") Integer productId,
+                                                @Param("productName") String productName);
+
+
+    /**
+     * 查询商品
+     * @param integerSet
+     * @param keyword
+     * @return
+     */
+    List<Product> searchProduct(@Param("integerSet") Set<Integer> integerSet,
+                                @Param("keyword") String keyword);
 }

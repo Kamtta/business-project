@@ -26,4 +26,10 @@ public class Const {
     public static final String INSERT_CATEGORY_SUCCESS = "添加类别成功";
 
     public static final String UPDATE_CATEGORYNAME_SUCCESS = "更新品类名字成功";
+    public static final String INSERT_PRODUCT_SUCCESS = "新增产品成功";
+
+    public static final String UPDATE_PRODUCT_SUCCESS = "更新产品成功";
+
+    public static final String UPLOAD_PATH = "D:\\uploadpic\\";
+
 }

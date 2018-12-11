@@ -10,7 +10,7 @@ public interface ICategoryService {
      * @Param category
      * @return
      */
-    ServerResponse add_category( Integer parentId, String categoryName);
+    ServerResponse add_category(User user, Integer parentId, String categoryName);
 
 
     /**
@@ -34,9 +34,8 @@ public interface ICategoryService {
 
     /**
      * 获取当前分类id及递归子节点categoryId
-     * @param user
      * @param categoryId
      * @return
      */
-    ServerResponse get_deep_category(User user,Integer categoryId);
+    ServerResponse get_deep_category(Integer categoryId);
 }

@@ -26,8 +26,13 @@ public class CategoryController {
      * @return
      */
     @RequestMapping("add_category.do")
-    public ServerResponse add_category(@RequestParam(required = false,defaultValue = "0")Integer parentId, String categoryName){
-        return iCategoryService.add_category(parentId,categoryName);
+    public ServerResponse add_category(HttpSession httpSession,@RequestParam(required = false,defaultValue = "0")Integer parentId, String categoryName){
+        Object o = httpSession.getAttribute(Const.CURRENT_USER);
+        if(o != null && o instanceof User){
+            User user = (User)o;
+            return iCategoryService.add_category(user,parentId,categoryName);
+        }
+        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
     }
 
     /**
@@ -74,7 +79,10 @@ public class CategoryController {
         Object o = session.getAttribute(Const.CURRENT_USER);
         if(o != null && o instanceof User){
             User user = (User)o;
-            return iCategoryService.get_deep_category(user,categoryId);
+            if(user.getRole() != Const.USER_ROLE_MANAGE){
+                return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
+            }
+            return iCategoryService.get_deep_category(categoryId);
         }
         return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
     }

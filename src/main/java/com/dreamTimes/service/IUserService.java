@@ -76,4 +76,5 @@ public interface IUserService {
      * @return
      */
     ServerResponse update_information(User user);
+
 }

@@ -1,6 +1,8 @@
 package com.dreamTimes.dao;
 
 import com.dreamTimes.pojo.Cart;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface CartMapper {
@@ -43,4 +45,22 @@ public interface CartMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Cart record);
+
+
+    /**
+     * 根据userID和productID判断是否存在购物车商品
+     * @param userId
+     * @param productId
+     * @return
+     */
+    Cart findCartByUserIdAndProductId(@Param("userId") Integer userId,
+                                     @Param("productId") Integer productId);
+
+
+    /**
+     * 根据userID查找相关的商品项
+     * @param userId
+     * @return
+     */
+    List<Cart> findCartByUserId(@Param("userId") Integer userId);
 }

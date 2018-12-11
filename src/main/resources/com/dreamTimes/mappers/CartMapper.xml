@@ -65,4 +65,15 @@
     select id, user_id, product_id, quantity, checked, create_time, update_time
     from cart
   </select>
+
+  <select id="findCartByUserIdAndProductId" parameterType="map" resultMap="BaseResultMap">
+    select id, user_id, product_id, quantity, checked, create_time, update_time
+     from cart
+     where user_id = #{userId} and product_id = #{productId}
+  </select>
+
+  <select id="findCartByUserId" parameterType="int" resultMap="BaseResultMap">
+    select id, user_id, product_id, quantity, checked, create_time, update_time
+    from cart where user_id=#{userId}
+  </select>
 </mapper>
