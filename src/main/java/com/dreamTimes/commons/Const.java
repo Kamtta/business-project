@@ -35,4 +35,9 @@ public class Const {
     public static final Integer SELECT_SUCCESS = 1;
     public static final Integer SELECT_FAIL = 0;
 
+    public static final String INSERT_ADDRESS_SUCCESS = "新增地址成功";
+    public static final String DELETE_ADDRESS_SUCCESS = "删除地址成功";
+
+    public static final String UPDATE_ADDRESS_SUCCESS = "更新地址成功";
+
 }

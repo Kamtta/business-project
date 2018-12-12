@@ -1,6 +1,8 @@
 package com.dreamTimes.dao;
 
 import com.dreamTimes.pojo.Shipping;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface ShippingMapper {
@@ -43,4 +45,22 @@ public interface ShippingMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Shipping record);
+
+
+    /**
+     * 根据用户id和shippingid进行查询
+     * @param userId
+     * @param shippingId
+     * @return
+     */
+    Shipping selectByUidAndShippingId(@Param("userId") Integer userId,
+                                      @Param("shippingId") Integer shippingId);
+
+
+    /**
+     * 根据用户id进行查询
+     * @param userId
+     * @return
+     */
+    List<Shipping> selectByUid(Integer userId);
 }

@@ -32,7 +32,11 @@ public enum ResponseCode {
     LIMIT_NUM_FAIL(0,"LIMIT_NUM_FAIL"),
     INSERT_CART_FAIL(28,"加入购物车失败"),
     UPDATE_FAIL(29,"更新失败"),
-    DELETE_CART_FAIL(30,"删除购物车商品失败")
+    DELETE_CART_FAIL(30,"删除购物车商品失败"),
+    INSERT_ADDRESS_FAIL(31,"新增地址失败"),
+    DELETE_ADDRESS_FAIL(32,"删除地址失败"),
+    UPDATE_ADDRESS_FAIL(33,"更新地址失败"),
+    SELECT_ADDRESS_FAIL(34,"查询地址失败")
 
     ;
     private Integer status;
