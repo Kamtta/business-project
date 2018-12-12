@@ -31,7 +31,9 @@ public enum ResponseCode {
     LIMIT_NUM_SUCCESS(1,"LIMIT_NUM_SUCCESS"),
     LIMIT_NUM_FAIL(0,"LIMIT_NUM_FAIL"),
     INSERT_CART_FAIL(28,"加入购物车失败"),
-    UPDATE_FAIL(29,"更新失败")
+    UPDATE_FAIL(29,"更新失败"),
+    DELETE_CART_FAIL(30,"删除购物车商品失败")
+
     ;
     private Integer status;
     private String msg;

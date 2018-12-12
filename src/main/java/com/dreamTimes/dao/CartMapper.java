@@ -4,6 +4,7 @@ import com.dreamTimes.pojo.Cart;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CartMapper {
     /**
@@ -63,4 +64,41 @@ public interface CartMapper {
      * @return
      */
     List<Cart> findCartByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 查询是否全部选中
+     * @param userId
+     * @return
+     */
+    int checkedAll(Integer userId);
+
+
+    /**
+     * 删除购物车中的某个商品
+     * @param userId
+     * @param productIds
+     * @return
+     */
+    int deleteByProductIds(@Param("userId") Integer userId,
+                           @Param("productIds") Set<Integer> productIds);
+
+
+    /**
+     * 选中购物车某个商品，取消购物车某个商品，全选，全部取消
+     * @param userId
+     * @param productId
+     * @param checked
+     * @return
+     */
+    int updateChecked(@Param("userId") Integer userId,
+                      @Param("productId") Integer productId,
+                      @Param("checked") Integer checked);
+
+
+    /**
+     * 查询购物车中商品的数量
+     * @param userId
+     * @return
+     */
+    int countProducts(Integer userId);
 }

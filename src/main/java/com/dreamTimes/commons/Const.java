@@ -30,6 +30,9 @@ public class Const {
 
     public static final String UPDATE_PRODUCT_SUCCESS = "更新产品成功";
 
-    public static final String UPLOAD_PATH = "D:\\uploadpic\\";
+    public static final String UPLOAD_PATH = "D:/uploadpic";
+
+    public static final Integer SELECT_SUCCESS = 1;
+    public static final Integer SELECT_FAIL = 0;
 
 }
