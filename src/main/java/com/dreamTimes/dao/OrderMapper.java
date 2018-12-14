@@ -1,6 +1,8 @@
 package com.dreamTimes.dao;
 
 import com.dreamTimes.pojo.Order;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface OrderMapper {
@@ -43,4 +45,27 @@ public interface OrderMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Order record);
+
+
+    /**
+     * 根据用户id查询所有的订单
+     * @param userId
+     * @return
+     */
+    List<Order> findAllOrderByUserId(Integer userId);
+
+
+    /**
+     * 根据订单号查询订单
+     * @return
+     */
+    Order selectOrderByOrderNO(@Param("userId") Integer userId,
+                               @Param("orderNo") Long orderNo);
+
+
+    /**
+     * 根据订单号进行搜索
+     * @return
+     */
+    List<Order> findOrderByOrderNO(Long orderNo);
 }

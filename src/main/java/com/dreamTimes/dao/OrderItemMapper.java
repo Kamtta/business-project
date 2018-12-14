@@ -53,4 +53,12 @@ public interface OrderItemMapper {
      * @return
      */
     int insertBatch(@Param("orderItemList") List<OrderItem> orderItemList);
+
+
+    /**
+     * 根据订单号查询订单明细
+     * @param orderNo
+     * @return
+     */
+    List<OrderItem> selectByOrderNo(Long orderNo);
 }

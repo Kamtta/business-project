@@ -93,4 +93,11 @@
     quantity, total_price, create_time, update_time
     from order_item
   </select>
+
+
+  <select id="selectByOrderNo" parameterType="long" resultMap="BaseResultMap">
+    select id, order_no, user_id, product_id, product_name, product_image, current_unit_price,
+    quantity, total_price, create_time, update_time
+    from order_item where order_no=#{orderNo}
+  </select>
 </mapper>

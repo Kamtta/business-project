@@ -39,5 +39,6 @@ public class Const {
     public static final String DELETE_ADDRESS_SUCCESS = "删除地址成功";
 
     public static final String UPDATE_ADDRESS_SUCCESS = "更新地址成功";
+    public static final String SENT_SUCCESS = "发货成功";
 
 }

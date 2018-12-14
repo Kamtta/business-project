@@ -1,7 +1,10 @@
 package com.dreamTimes.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.math.BigDecimal;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class OrderItemVO {
      private Long orderNo;
      private Integer productId;

@@ -1,5 +1,6 @@
 package com.dreamTimes.service.impl;
 
+import com.dreamTimes.commons.Const;
 import com.dreamTimes.commons.ResponseCode;
 import com.dreamTimes.commons.ServerResponse;
 import com.dreamTimes.dao.*;
@@ -8,14 +9,19 @@ import com.dreamTimes.service.IOrderService;
 import com.dreamTimes.utils.DateUtils;
 import com.dreamTimes.utils.DecimalUtils;
 import com.dreamTimes.utils.PropertiesUtils;
+import com.dreamTimes.vo.CartOrderItemVO;
 import com.dreamTimes.vo.OrderItemVO;
 import com.dreamTimes.vo.OrderVO;
 import com.dreamTimes.vo.ShippingVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -93,6 +99,203 @@ public class OrderServiceImpl implements IOrderService {
         }
         OrderVO orderVO = assembleOrderVO(order,shippingVO,orderItemVOList);
         return ServerResponse.createServerResponseBySuccess(null,orderVO);
+    }
+
+    @Override
+    public ServerResponse get_order_cart_product(Integer userId) {
+//        根据有用户id查询选中的购物车项
+        List<Cart> cartList = cartMapper.findCheckedCartByUserId(userId);
+//        转换成orderItem
+        if(cartList == null || cartList.size() == 0){
+            return ServerResponse.createServerResponseByError(ResponseCode.CART_EMPTY.getStatus(),ResponseCode.CART_EMPTY.getMsg());
+        }
+        ServerResponse serverResponse = assembleOrderItem(userId,cartList);
+        if(!serverResponse.isSucess()){
+            return serverResponse;
+        }
+        List<OrderItem> orderItemList = (List<OrderItem>)serverResponse.getData();
+        List<OrderItemVO> orderItemVOList = Lists.newArrayList();
+        BigDecimal orderTotalPrice = new BigDecimal("0");
+        for (OrderItem orderItem:
+             orderItemList) {
+            orderTotalPrice = orderTotalPrice.add(orderItem.getTotalPrice());
+            OrderItemVO orderItemVO = assembleOrderItemVO(orderItem);
+            orderItemVOList.add(orderItemVO);
+        }
+//        封装vo
+        CartOrderItemVO cartOrderItemVO = new CartOrderItemVO();
+        cartOrderItemVO.setImageHost(PropertiesUtils.getKey("imagesHost"));
+        cartOrderItemVO.setOrderItemVoList(orderItemVOList);
+        cartOrderItemVO.setProductTotalPrice(orderTotalPrice);
+//        返回结果
+        return ServerResponse.createServerResponseBySuccess(null,cartOrderItemVO);
+    }
+
+    @Override
+    public ServerResponse list(Integer userId, Integer pageNum, Integer pageSize) {
+//        非空校验
+        if(pageNum == null || pageSize == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//        根据用户id获取全部订单
+        List<Order> orderList = orderMapper.findAllOrderByUserId(userId);
+        if(orderList == null || orderList.size()==0){
+            return ServerResponse.createServerResponseByError(ResponseCode.ORDER_EMPTY.getStatus(),ResponseCode.ORDER_EMPTY.getMsg());
+        }
+//        根据订单号获取OrderVO对象
+        PageHelper.startPage(pageNum,pageSize);
+        List<OrderVO> orderVOList = Lists.newArrayList();
+        for (Order order:
+             orderList) {
+            ServerResponse serverResponse = detail(userId,order.getOrderNo());
+            if(!serverResponse.isSucess()){
+               return serverResponse;
+            }
+            OrderVO orderVO = (OrderVO) serverResponse.getData();
+            orderVOList.add(orderVO);
+        }
+//        返回结果
+        PageInfo pageInfo = new PageInfo(orderVOList);
+        return ServerResponse.createServerResponseBySuccess(null,pageInfo);
+    }
+
+    @Override
+    public ServerResponse detail(Integer userId, Long orderNo) {
+//        非空判断
+        if(orderNo == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//        根据订单号进行查询
+        List<OrderItem> orderItemList = orderItemMapper.selectByOrderNo(orderNo);
+        if(orderItemList == null || orderItemList.size() == 0){
+            return ServerResponse.createServerResponseByError(ResponseCode.ORDER_EMPTY.getStatus(),ResponseCode.ORDER_EMPTY.getMsg());
+        }
+        Order order = orderMapper.selectOrderByOrderNO(userId,orderNo);
+        Shipping shipping = shippingMapper.selectByUidAndShippingId(order.getUserId(),order.getShippingId());
+        List<OrderItemVO> orderItemVOList = new ArrayList<>();
+        for (OrderItem orderItem:
+             orderItemList) {
+            OrderItemVO orderItemVO = assembleOrderItemVO(orderItem);
+            orderItemVOList.add(orderItemVO);
+        }
+        ShippingVO shippingVO = assembleshippingVO(shipping);
+        OrderVO orderVO = assembleOrderVO(order,shippingVO,orderItemVOList);
+//        返回结果
+        return ServerResponse.createServerResponseBySuccess(null,orderVO);
+    }
+
+    @Override
+    public ServerResponse cancel(Integer userId, Long orderNo) {
+//        非空判断
+        if(orderNo == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//        根据orderNo和userId查询
+        Order order = orderMapper.selectOrderByOrderNO(userId,orderNo);
+        if(order == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.ORDER_EMPTY.getStatus(),ResponseCode.ORDER_EMPTY.getMsg());
+        }
+//        改变订单的状态
+        if(order.getStatus() != ResponseCode.OrderStatus.NOT_PAYMENT.getCode()){
+            return ServerResponse.createServerResponseByError(ResponseCode.ORDER_CANCEL_CANNOT.getStatus(),ResponseCode.ORDER_CANCEL_CANNOT.getMsg());
+        }
+        order.setStatus(ResponseCode.OrderStatus.ORDER_CANCEL.getCode());
+        int result = orderMapper.updateByPrimaryKey(order);
+        if(result <= 0){
+            return ServerResponse.createServerResponseByError(ResponseCode.ORDER_CANCEL_FAIL.getStatus(),ResponseCode.ORDER_CANCEL_FAIL.getMsg());
+        }
+//        返回结果
+        return ServerResponse.createServerResponseBySuccess();
+    }
+
+    /**
+     * 后台接口实现
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse listOrders(Integer pageNum, Integer pageSize) {
+//       非空校验
+        if(pageNum == null || pageSize == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//       获取所有用户的订单信息
+        List<Order> orderList = orderMapper.selectAll();
+        if(orderList == null || orderList.size() == 0){
+            return ServerResponse.createServerResponseByError(ResponseCode.ORDER_EMPTY.getStatus(),ResponseCode.ORDER_EMPTY.getMsg());
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<OrderVO> orderVOList = new ArrayList<>();
+        for (Order order:
+             orderList) {
+           ServerResponse serverResponse = list(order.getUserId(),pageNum,pageSize);
+           if(!serverResponse.isSucess()){
+                return serverResponse;
+           }
+            orderVOList.addAll(((PageInfo)serverResponse.getData()).getList());
+        }
+//        返回结果
+        PageInfo pageInfo = new PageInfo(orderVOList);
+        return ServerResponse.createServerResponseBySuccess(null,pageInfo);
+    }
+
+    @Override
+    public ServerResponse search(Long orderNo,Integer pageNum,Integer pageSize) {
+//        非空校验
+        if(orderNo == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//        通过订单号进行查询
+        PageHelper.startPage(pageNum,pageSize);
+        List<Order> orderList = orderMapper.findOrderByOrderNO(orderNo);
+        if(orderList == null || orderList.size() == 0){
+            return ServerResponse.createServerResponseByError(ResponseCode.NOT_FOUND_ORDER.getStatus(),ResponseCode.NOT_FOUND_ORDER.getMsg());
+        }
+        List<OrderVO> orderVOList = new ArrayList<>();
+        for (Order order:
+             orderList) {
+           ServerResponse serverResponse = detail(order.getUserId(),order.getOrderNo());
+           if (!serverResponse.isSucess()){
+               return serverResponse;
+           }
+           OrderVO orderVO = (OrderVO) serverResponse.getData();
+           orderVOList.add(orderVO);
+        }
+
+//        返回结果
+        PageInfo pageInfo = new PageInfo(orderVOList);
+        return ServerResponse.createServerResponseBySuccess(null,pageInfo);
+    }
+
+    @Override
+    public ServerResponse orderDetail(Long orderNo) {
+        //        非空判断
+        if(orderNo == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+        return detail(null,orderNo);
+    }
+
+    @Override
+    public ServerResponse send_goods(Long orderNo) {
+//        非空判断
+        if(orderNo == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
+        }
+//        根据订单号进行查询
+        Order order = orderMapper.selectOrderByOrderNO(null,orderNo);
+        if(order == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.NOT_FOUND_ORDER.getStatus(),ResponseCode.NOT_FOUND_ORDER.getMsg());
+        }
+//        修改订单的状态
+        order.setStatus(ResponseCode.OrderStatus.SENT_PRODUCT.getCode());
+        int result = orderMapper.updateByPrimaryKey(order);
+        if(result <= 0){
+            return ServerResponse.createServerResponseByError(ResponseCode.SENT_ERROR.getStatus(),ResponseCode.SENT_ERROR.getMsg());
+        }
+//        返回结果
+        return ServerResponse.createServerResponseBySuccess(null,Const.SENT_SUCCESS);
     }
 
 
