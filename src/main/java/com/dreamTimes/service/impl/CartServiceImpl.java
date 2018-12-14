@@ -38,6 +38,10 @@ public class CartServiceImpl implements ICartService {
         }
 //        添加商品信息
         Cart cart = cartMapper.findCartByUserIdAndProductId(userId,productId);
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if(product == null){
+            return ServerResponse.createServerResponseByError(ResponseCode.NOT_SUCH_PRODUCT.getStatus(),ResponseCode.NOT_SUCH_PRODUCT.getMsg());
+        }
         if(cart == null){
 //            添加
             Cart cart1 = new Cart();
@@ -54,7 +58,7 @@ public class CartServiceImpl implements ICartService {
             Cart cart1 = new Cart();
             cart1.setId(cart.getId());
             cart1.setChecked(cart.getChecked());
-            cart1.setQuantity(count);
+            cart1.setQuantity(count+cart.getQuantity());
             cart1.setUserId(userId);
             cart1.setProductId(productId);
             int update_result = cartMapper.updateByPrimaryKey(cart1);
@@ -174,7 +178,11 @@ public class CartServiceImpl implements ICartService {
         BigDecimal sum = new BigDecimal("0");
         for (CartProductVO cartProductVO:
              cartProductVOList) {
-            sum = sum.add(cartProductVO.getProductTotalPrice());
+            if(cartProductVO.getProductChecked() == Const.SELECT_SUCCESS){
+                sum = sum.add(cartProductVO.getProductTotalPrice());
+            }else{
+             continue;
+            }
         }
         cartVO.setCartProductVoList(cartProductVOList);
         cartVO.setCartTotalPrice(sum);
@@ -222,9 +230,9 @@ public class CartServiceImpl implements ICartService {
                 cartProductVO.setLimitQuantity(ResponseCode.LIMIT_NUM_FAIL.getMsg());
             }
             cartProductVO.setQuantity(limitProductCount);
+            cartProductVO.setProductTotalPrice(DecimalUtils.mul(product.getPrice().doubleValue(),cart.getQuantity().doubleValue()));
         }
         cartProductVO.setProductChecked(cart.getChecked());
-        cartProductVO.setProductTotalPrice(DecimalUtils.mul(product.getPrice().doubleValue(),cart.getQuantity().doubleValue()));
         return cartProductVO;
     }
 }

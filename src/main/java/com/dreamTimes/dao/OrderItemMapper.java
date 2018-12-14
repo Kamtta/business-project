@@ -1,6 +1,8 @@
 package com.dreamTimes.dao;
 
 import com.dreamTimes.pojo.OrderItem;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface OrderItemMapper {
@@ -43,4 +45,12 @@ public interface OrderItemMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(OrderItem record);
+
+
+    /**
+     * 批量添加
+     * @param orderItemList
+     * @return
+     */
+    int insertBatch(@Param("orderItemList") List<OrderItem> orderItemList);
 }

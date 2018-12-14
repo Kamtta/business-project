@@ -36,7 +36,14 @@ public enum ResponseCode {
     INSERT_ADDRESS_FAIL(31,"新增地址失败"),
     DELETE_ADDRESS_FAIL(32,"删除地址失败"),
     UPDATE_ADDRESS_FAIL(33,"更新地址失败"),
-    SELECT_ADDRESS_FAIL(34,"查询地址失败")
+    SELECT_ADDRESS_FAIL(34,"查询地址失败"),
+    NOT_SUCH_PRODUCT(35,"没有此商品"),
+    CART_EMPTY(36,"购物车为空"),
+    STOCK_NOT_ENOUGH(37,"库存不足"),
+    PLEASE_ADD_ADDRESS(38,"请添加收货地址"),
+    INSERT_ORDER_FAIL(39,"添加订单失败"),
+    INSERT_ORDERITEM_FAIL(40,"添加订单明细失败"),
+    DELETE_FAIL(41,"删除失败")
 
     ;
     private Integer status;
@@ -63,5 +70,52 @@ public enum ResponseCode {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+
+    public enum OrderStatus{
+        //        0-已取消  10-未付款  20-已付款  30-已发货  40-已完成  50-已关闭
+        ONLINE_PAY(1,"线上支付"),
+        ORDER_CANCEL(0,"已取消"),
+        NOT_PAYMENT(10,"未付款"),
+        FINISH_PAYMENT(20,"已付款"),
+        SENT_PRODUCT(30,"已发货"),
+        ORDER_FINISHED(40,"已完成"),
+        ORDER_CLOSED(50,"已关闭")
+
+        ;
+        private Integer code;
+        private String desc;
+
+        OrderStatus(Integer code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
+            this.code = code;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public static OrderStatus codeOf(Integer code){
+            for (OrderStatus orderStatus:
+                 values()) {
+                if(code == orderStatus.getCode()){
+                    return orderStatus;
+                }
+            }
+            return null;
+        }
     }
 }

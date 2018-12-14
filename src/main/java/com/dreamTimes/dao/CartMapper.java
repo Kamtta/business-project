@@ -101,4 +101,20 @@ public interface CartMapper {
      * @return
      */
     int countProducts(Integer userId);
+
+
+    /**
+     * 根据userID查找选中的商品项
+     * @param userId
+     * @return
+     */
+    List<Cart> findCheckedCartByUserId(@Param("userId") Integer userId);
+
+
+    /**
+     * 批量删除
+     * @param cartList
+     * @return
+     */
+    int deleteBatch(@Param("cartList") List<Cart> cartList);
 }
