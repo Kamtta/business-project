@@ -41,4 +41,13 @@ public class Const {
     public static final String UPDATE_ADDRESS_SUCCESS = "更新地址成功";
     public static final String SENT_SUCCESS = "发货成功";
 
+
+    public static final String FAIL = "failed";
+    public static final String SUCCESS = "success";
+
+    public static final String PAY_SUCCESS = "TRADE_SUCCESS";
+
+    public static final String TRUE = "true";
+    public static final String FAIL_INFORMATION = "fail";
+
 }

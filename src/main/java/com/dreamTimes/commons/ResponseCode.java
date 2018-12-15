@@ -48,7 +48,8 @@ public enum ResponseCode {
     ORDER_CANCEL_CANNOT(43,"此订单已付款，无法被取消"),
     ORDER_CANCEL_FAIL(44,"该用户没有此订单"),
     NOT_FOUND_ORDER(45,"没有此订单"),
-    SENT_ERROR(46,"发货失败")
+    SENT_ERROR(46,"发货失败"),
+    PAY_FAIL(47,"支付宝生成订单失败")
 
     ;
     private Integer status;
@@ -118,6 +119,48 @@ public enum ResponseCode {
                  values()) {
                 if(code == orderStatus.getCode()){
                     return orderStatus;
+                }
+            }
+            return null;
+        }
+    }
+
+
+    public enum PaymentWayEnum{
+        //       1-支付宝   2-微信
+        ALIPAY(1,"支付宝"),
+        WECHAT(2,"微信")
+
+        ;
+        private Integer code;
+        private String desc;
+
+        PaymentWayEnum(Integer code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
+            this.code = code;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public static PaymentWayEnum codeOf(Integer code){
+            for (PaymentWayEnum paymentWayEnum:
+                    values()) {
+                if(code == paymentWayEnum.getCode()){
+                    return paymentWayEnum;
                 }
             }
             return null;

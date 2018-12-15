@@ -1,6 +1,7 @@
 package com.dreamTimes.utils;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Date;
 
 public class DateUtils {
 
-    private static final String STANDARD_FORMAT = "yyyy-MM-dd HH-mm-ss";
+    private static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static String dateToStr(Date date, String format){
         DateTime dateTime = new DateTime(date);
@@ -30,7 +31,7 @@ public class DateUtils {
     }
 
     public static Date strToDate(String str){
-        DateTimeFormatter dateTimeFormatter = org.joda.time.format.DateTimeFormat.forPattern(STANDARD_FORMAT);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(STANDARD_FORMAT);
         DateTime dateTime = dateTimeFormatter.parseDateTime(str);
         return dateTime.toDate();
     }

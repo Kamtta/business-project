@@ -2,6 +2,8 @@ package com.dreamTimes.service;
 
 import com.dreamTimes.commons.ServerResponse;
 
+import java.util.Map;
+
 public interface IOrderService {
 
 
@@ -82,4 +84,29 @@ public interface IOrderService {
      * @return
      */
     ServerResponse send_goods(Long orderNo);
+
+
+    /**
+     * 支付
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    ServerResponse pay(Integer userId,Long orderNo);
+
+
+    /**
+     * 支付回调
+     * @param paramMap
+     * @return
+     */
+    String alipay_callback(Map<String,String> paramMap);
+
+
+    /**
+     * 根据订单号查询订单的支付状态
+     * @param orderNo
+     * @return
+     */
+    ServerResponse query_order_pay_status(Long orderNo);
 }
