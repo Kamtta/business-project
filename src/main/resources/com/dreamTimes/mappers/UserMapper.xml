@@ -32,11 +32,11 @@
     -->
     insert into user (id, username, password, 
       email, phone, question, 
-      answer, role, create_time, 
+      answer,  create_time,
       update_time)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
-      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
+      #{answer,jdbcType=VARCHAR}, now(),
       now())
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.dreamTimes.pojo.User">

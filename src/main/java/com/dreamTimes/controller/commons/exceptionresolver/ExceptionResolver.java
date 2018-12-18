@@ -22,7 +22,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         modelAndView.addObject("status",ResponseCode.EXCEPTION.getStatus());
         modelAndView.addObject("msg",ResponseCode.EXCEPTION.getMsg());
-        modelAndView.addObject("data",e.toString());
+        modelAndView.addObject("data",e.getMessage());
         return modelAndView;
     }
 }

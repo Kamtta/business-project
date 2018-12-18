@@ -45,12 +45,12 @@ public enum ResponseCode {
     INSERT_ORDERITEM_FAIL(40,"添加订单明细失败"),
     DELETE_FAIL(41,"删除失败"),
     ORDER_EMPTY(42,"订单为空"),
-    ORDER_CANCEL_CANNOT(43,"此订单已付款，无法被取消"),
+    ORDER_CANCEL_CANNOT(43,"此订单无法被取消"),
     ORDER_CANCEL_FAIL(44,"该用户没有此订单"),
     NOT_FOUND_ORDER(45,"没有此订单"),
     SENT_ERROR(46,"发货失败"),
     PAY_FAIL(47,"支付宝生成订单失败"),
-    EXCEPTION(48,"出现异常")
+    EXCEPTION(48,"出现异常,查看服务端异常日记信息")
 
     ;
     private Integer status;
