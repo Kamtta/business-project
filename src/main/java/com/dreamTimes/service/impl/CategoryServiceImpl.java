@@ -22,15 +22,12 @@ public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     CategoryMapper categoryMapper;
     @Override
-    public ServerResponse add_category(User user,Integer parentId,String categoryName) {
+    public ServerResponse add_category(Integer parentId,String categoryName) {
 //        step1:非空校验
         if(StringUtils.isBlank(String.valueOf(parentId)) || StringUtils.isBlank(categoryName)){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
 //        step2:判断是否有权限进行操作
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
 //        step3:判断类别名是否存在
         int result = categoryMapper.check_typeName(categoryName);
         if(result > 0){
@@ -48,15 +45,12 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ServerResponse get_category(User user, Integer categoryId) {
+    public ServerResponse get_category(Integer categoryId) {
 //        step1:非空校验
         if(StringUtils.isBlank(String.valueOf(categoryId))){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
 //        step2:判断用户是否有权限进行操作
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
 //        step3:根据品类id查询品类
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
         if(category == null){
@@ -69,15 +63,12 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ServerResponse set_category_name(User user, Integer categoryId, String categoryName) {
+    public ServerResponse set_category_name( Integer categoryId, String categoryName) {
 //        step1：非空校验
         if(StringUtils.isBlank(String.valueOf(categoryId)) || StringUtils.isBlank(categoryName)){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
 //        step2：判断是否有权限
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
 //        step3：根据id进行修改
         Category category = new Category();
         category.setId(categoryId);

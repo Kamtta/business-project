@@ -3,6 +3,7 @@ package com.dreamTimes.controller.portal;
 import com.dreamTimes.commons.ServerResponse;
 import com.dreamTimes.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +19,8 @@ public class ProductController {
      * @param productId
      * @return
      */
-    @RequestMapping(value = "detail.do")
-    public ServerResponse detail(Integer productId){
+    @RequestMapping(value = "detail/{productId}")
+    public ServerResponse detail(@PathVariable("productId") Integer productId){
        return productService.detail(productId);
     }
 

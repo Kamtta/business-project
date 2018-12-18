@@ -45,5 +45,19 @@
         </property>
     </bean>
 
-
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/manage/**"/>
+            <mvc:exclude-mapping path="/manage/user/login/**"/>
+            <bean class="com.dreamTimes.controller.commons.interceptor.AuthorityInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/portal/**"/>
+            <mvc:exclude-mapping path="/portal/user/login/**"/>
+            <mvc:exclude-mapping path="/portal/user/register.do"/>
+            <mvc:exclude-mapping path="/portal/order/alipay_callback.do"/>
+            <mvc:exclude-mapping path="/portal/product/**"/>
+            <bean class="com.dreamTimes.controller.commons.interceptor.UserLoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

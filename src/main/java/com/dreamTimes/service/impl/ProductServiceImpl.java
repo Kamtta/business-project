@@ -42,15 +42,13 @@ public class ProductServiceImpl implements IProductService {
     ICategoryService categoryService;
 
     @Override
-    public ServerResponse save(User user, Product product) {
+    public ServerResponse save( Product product) {
 //        step1：非空校验
         if(product == null){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
 //        step2：权限的判断
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
+
 //        step3：获取主图
         if (!StringUtils.isBlank(product.getSubImages())){
             String[] subImgs = product.getSubImages().split(",");
@@ -78,15 +76,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ServerResponse set_sale_status(User user, Integer productId, Integer status) {
+    public ServerResponse set_sale_status(Integer productId, Integer status) {
 //        step1：非空校验
         if(StringUtils.isBlank(String.valueOf(productId)) || StringUtils.isBlank(String.valueOf(status))){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
 //        step2：权限判断
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
 //        step3：状态的更新
         Product product = new Product();
         product.setId(productId);
@@ -100,15 +95,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ServerResponse detail(User user, Integer productId) {
+    public ServerResponse detailManage(Integer productId) {
 //        step1：非空校验
         if(StringUtils.isBlank(String.valueOf(productId))){
             return ServerResponse.createServerResponseByError(ResponseCode.PARAM_EMPTY.getStatus(),ResponseCode.PARAM_EMPTY.getMsg());
         }
 //        step2：判断权限
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
 //        step3：根据id查询商品
         Product product = productMapper.selectByPrimaryKey(productId);
         if(product == null){
@@ -120,11 +112,8 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ServerResponse list(User user, Integer pageNum, Integer pageSize) {
+    public ServerResponse list(Integer pageNum, Integer pageSize) {
 //        step1:判断权限
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
 //        step2:加载分页插件
        PageHelper.startPage(pageNum,pageSize);
 //        step3：查询信息
@@ -142,11 +131,8 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ServerResponse search(User user, Integer productId, String productName, Integer pageNum, Integer pageSize) {
+    public ServerResponse search( Integer productId, String productName, Integer pageNum, Integer pageSize) {
 //        step1:权限判断
-        if(user.getRole() != Const.USER_ROLE_MANAGE){
-            return ServerResponse.createServerResponseByError(ResponseCode.ROLE_ERROR.getStatus(),ResponseCode.ROLE_ERROR.getMsg());
-        }
 //        step2：非空判断处理
         if(!StringUtils.isBlank(productName)){
             productName = "%" + productName + "%";

@@ -49,7 +49,8 @@ public enum ResponseCode {
     ORDER_CANCEL_FAIL(44,"该用户没有此订单"),
     NOT_FOUND_ORDER(45,"没有此订单"),
     SENT_ERROR(46,"发货失败"),
-    PAY_FAIL(47,"支付宝生成订单失败")
+    PAY_FAIL(47,"支付宝生成订单失败"),
+    EXCEPTION(48,"出现异常")
 
     ;
     private Integer status;

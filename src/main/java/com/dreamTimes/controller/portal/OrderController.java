@@ -10,6 +10,7 @@ import com.dreamTimes.pojo.User;
 import com.dreamTimes.service.IOrderService;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,14 +31,11 @@ public class OrderController {
      * 创建订单
      * @return
      */
-    @RequestMapping(value = "create.do")
-    public ServerResponse create(HttpSession session,Integer shippingId){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return orderService.create(user.getId(),shippingId);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+    @RequestMapping(value = "create/{shippingId}")
+    public ServerResponse create(HttpSession session,
+                                 @PathVariable("shippingId") Integer shippingId){
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return orderService.create(user.getId(),shippingId);
     }
 
 
@@ -48,12 +46,8 @@ public class OrderController {
      */
     @RequestMapping(value = "get_order_cart_product.do")
     public ServerResponse get_order_cart_product(HttpSession session){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return orderService.get_order_cart_product(user.getId());
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return orderService.get_order_cart_product(user.getId());
     }
 
 
@@ -65,12 +59,8 @@ public class OrderController {
     public ServerResponse list(HttpSession session,
                                @RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return orderService.list(user.getId(),pageNum,pageSize);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return orderService.list(user.getId(),pageNum,pageSize);
     }
 
 
@@ -78,14 +68,11 @@ public class OrderController {
      * 订单详情detail
      * @return
      */
-    @RequestMapping(value = "detail.do")
-    public ServerResponse detail(HttpSession session,Long orderNo){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return orderService.detail(user.getId(),orderNo);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+    @RequestMapping(value = "detail/{orderNo}")
+    public ServerResponse detail(HttpSession session,
+                                 @PathVariable("orderNo") Long orderNo){
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return orderService.detail(user.getId(),orderNo);
     }
 
 
@@ -93,14 +80,11 @@ public class OrderController {
      * 取消订单
      * @return
      */
-    @RequestMapping(value = "cancel.do")
-    public ServerResponse cancel(HttpSession session,Long orderNo){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return orderService.cancel(user.getId(),orderNo);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+    @RequestMapping(value = "cancel/{orderNo}")
+    public ServerResponse cancel(HttpSession session,
+                                 @PathVariable("orderNo") Long orderNo){
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return orderService.cancel(user.getId(),orderNo);
     }
 
 
@@ -110,14 +94,11 @@ public class OrderController {
      * @param orderNo
      * @return
      */
-    @RequestMapping(value = "pay.do")
-    public ServerResponse pay(HttpSession session,Long orderNo){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return orderService.pay(user.getId(),orderNo);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+    @RequestMapping(value = "pay/{orderNo}")
+    public ServerResponse pay(HttpSession session,
+                              @PathVariable("orderNo") Long orderNo){
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return orderService.pay(user.getId(),orderNo);
     }
 
 
@@ -161,12 +142,8 @@ public class OrderController {
      * 查看订单的支付状态
      * @return
      */
-    @RequestMapping(value = "query_order_pay_status.do")
-   public ServerResponse query_order_pay_status(HttpSession session,Long orderNo){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            return orderService.query_order_pay_status(orderNo);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+    @RequestMapping(value = "query_order_pay_status/{orderNo}")
+   public ServerResponse query_order_pay_status(@PathVariable("orderNo") Long orderNo){
+        return orderService.query_order_pay_status(orderNo);
    }
 }

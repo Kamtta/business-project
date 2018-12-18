@@ -7,6 +7,7 @@ import com.dreamTimes.pojo.Shipping;
 import com.dreamTimes.pojo.User;
 import com.dreamTimes.service.IShippingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,14 +29,10 @@ public class ShippingController {
      * @return
      */
     @RequestMapping(value = "add.do")
-    public ServerResponse add(HttpSession session, Shipping shipping){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            shipping.setUserId(user.getId());
-            return shippingService.add(shipping);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+    public ServerResponse add(HttpSession session,Shipping shipping){
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        shipping.setUserId(user.getId());
+        return shippingService.add(shipping);
     }
 
 
@@ -43,14 +40,11 @@ public class ShippingController {
      * 删除地址
      * @return
      */
-    @RequestMapping(value = "del.do")
-    public ServerResponse del(HttpSession session,Integer shippingId){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return shippingService.del(user.getId(),shippingId);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+    @RequestMapping(value = "del/{shippingId}")
+    public ServerResponse del(HttpSession session,
+                              @PathVariable("shippingId") Integer shippingId){
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return shippingService.del(user.getId(),shippingId);
     }
 
 
@@ -60,13 +54,9 @@ public class ShippingController {
      */
     @RequestMapping(value = "update.do")
     public ServerResponse update(HttpSession session,Shipping shipping){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            shipping.setUserId(user.getId());
-            return shippingService.update(shipping);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        shipping.setUserId(user.getId());
+        return shippingService.update(shipping);
     }
 
 
@@ -74,14 +64,11 @@ public class ShippingController {
      * 选中查看具体的地址
      * @return
      */
-    @RequestMapping(value = "select.do")
-    public ServerResponse select(HttpSession session,Integer shippingId){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return shippingService.select(user.getId(),shippingId);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+    @RequestMapping(value = "select/{shippingId}")
+    public ServerResponse select(HttpSession session,
+                                 @PathVariable("shippingId") Integer shippingId){
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return shippingService.select(user.getId(),shippingId);
     }
 
 
@@ -95,11 +82,7 @@ public class ShippingController {
     public ServerResponse list(HttpSession session,
                                @RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize){
-        Object o = session.getAttribute(Const.CURRENT_USER);
-        if(o != null && o instanceof User){
-            User user = (User)o;
-            return shippingService.list(user.getId(),pageNum,pageSize);
-        }
-        return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_LOGIN.getStatus(),ResponseCode.USER_NOT_LOGIN.getMsg());
+        User user= (User)session.getAttribute(Const.CURRENT_USER);
+        return shippingService.list(user.getId(),pageNum,pageSize);
     }
 }
