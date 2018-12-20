@@ -109,4 +109,21 @@ public interface UserMapper {
      */
     int update_information(User user);
 
+
+    /**
+     * 插入token
+     * @param userId
+     * @param token
+     * @return
+     */
+    int insertToken(@Param("userId") Integer userId,
+                    @Param("token") String token);
+
+
+    /**
+     * 根据token查询相应的用户
+     * @param token
+     * @return
+     */
+    User findUserByToken(String token);
 }

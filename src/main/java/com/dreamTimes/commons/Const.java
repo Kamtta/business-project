@@ -50,4 +50,6 @@ public class Const {
     public static final String TRUE = "true";
     public static final String FAIL_INFORMATION = "fail";
 
+    public static final String AUTO_LOGIN_TOKEN = "autoLoginToken";
+
 }

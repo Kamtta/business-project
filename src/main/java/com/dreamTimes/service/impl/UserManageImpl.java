@@ -60,4 +60,20 @@ public class UserManageImpl implements IUserManageService {
         PageInfo pageInfo = new PageInfo(userList);
         return ServerResponse.createServerResponseBySuccess(null,pageInfo);
     }
+
+    @Override
+    public void autoLoginToken(Integer userId, String token) {
+//        直接进行永久性的存储
+        userMapper.insertToken(userId,token);
+    }
+
+    @Override
+    public User findUserByToken(String token) {
+//        获取用户信息
+        User user = userMapper.findUserByToken(token);
+        if(user == null){
+            return null;
+        }
+        return user;
+    }
 }

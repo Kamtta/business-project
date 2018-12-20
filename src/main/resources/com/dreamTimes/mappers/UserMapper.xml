@@ -123,4 +123,14 @@
      where  id = #{id,jdbcType=INTEGER}
   </update>
 
+
+  <insert id="insertToken" parameterType="map">
+    insert into user set token=#{token} where id = #{userId}
+  </insert>
+
+  <select id="findUserByToken" parameterType="string" resultMap="BaseResultMap">
+    select id, username, password, email, phone, question, answer, role, create_time,
+    update_time
+    from user where token=#{token}
+  </select>
 </mapper>
