@@ -11,7 +11,7 @@
     <title>图片上传</title>
 </head>
 <body>
-    <form name="form" action="/manage/product/upload.do" method="post"  enctype="multipart/form-data">
+    <form name="form" action="/business-project/manage/product/upload.do" method="post"  enctype="multipart/form-data">
         <input type="file" name="upload_file">
         <input type="submit" value="upload"/>
     </form>
