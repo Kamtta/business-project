@@ -27,20 +27,23 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         HttpSession session = httpServletRequest.getSession();
-
-        Cookie[] cookies = httpServletRequest.getCookies();
-        if(cookies != null && cookies.length > 0){
-            for (Cookie cookie:
-                 cookies) {
-                String cookieName = cookie.getName();
-                if(cookieName.equals(Const.AUTO_LOGIN_TOKEN)){
-                    String token = cookie.getValue();
-                    User user = userManageService.findUserByToken(token);
-                    session.setAttribute(Const.CURRENT_USER,user);
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            Cookie[] cookies = httpServletRequest.getCookies();
+            if(cookies != null && cookies.length > 0){
+                for (Cookie cookie:
+                        cookies) {
+                    String cookieName = cookie.getName();
+                    if(cookieName.equals(Const.AUTO_LOGIN_TOKEN)){
+                        String token = cookie.getValue();
+                        user = userManageService.findUserByToken(token);
+                        session.setAttribute(Const.CURRENT_USER,user);
+                        break;
+                    }
                 }
             }
         }
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+
         if(user == null || user.getRole() != Const.USER_ROLE_MANAGE){
 //            刷新一下缓冲区的数据
             httpServletResponse.reset();

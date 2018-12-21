@@ -124,9 +124,9 @@
   </update>
 
 
-  <insert id="insertToken" parameterType="map">
-    insert into user set token=#{token} where id = #{userId}
-  </insert>
+  <update id="insertToken" parameterType="map">
+     update user set token=#{token} where id = #{userId}
+  </update>
 
   <select id="findUserByToken" parameterType="string" resultMap="BaseResultMap">
     select id, username, password, email, phone, question, answer, role, create_time,
