@@ -11,6 +11,7 @@ import com.dreamTimes.pojo.User;
 import com.dreamTimes.service.ICategoryService;
 import com.dreamTimes.service.IProductService;
 import com.dreamTimes.utils.DateUtils;
+import com.dreamTimes.utils.FTPUtils;
 import com.dreamTimes.utils.PropertiesUtils;
 import com.dreamTimes.vo.ProductDetailVO;
 import com.dreamTimes.vo.ProductListVO;
@@ -172,6 +173,15 @@ public class ProductServiceImpl implements IProductService {
         File result = new File(path,newFileName);
         try {
             file.transferTo(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        将图片上传到FTP服务器上
+        List<File> fileList = Lists.newArrayList();
+        fileList.add(result);
+        result.delete();
+        try {
+            FTPUtils.uploadFile(fileList);
         } catch (IOException e) {
             e.printStackTrace();
         }

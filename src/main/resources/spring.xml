@@ -22,7 +22,7 @@
     <!--开始定时任务调度注解-->
     <task:annotation-driven></task:annotation-driven>
 
-    <!--开启基于注解的实物配置-->
+    <!--开启基于注解的事务配置-->
     <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"></property>

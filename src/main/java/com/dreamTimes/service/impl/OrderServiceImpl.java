@@ -2,6 +2,8 @@ package com.dreamTimes.service.impl;
 
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import com.alipay.DemoHbRunner;
@@ -35,6 +37,7 @@ import com.dreamTimes.pojo.Product;
 import com.dreamTimes.service.IOrderService;
 import com.dreamTimes.utils.DateUtils;
 import com.dreamTimes.utils.DecimalUtils;
+import com.dreamTimes.utils.FTPUtils;
 import com.dreamTimes.utils.PropertiesUtils;
 import com.dreamTimes.vo.CartOrderItemVO;
 import com.dreamTimes.vo.OrderItemVO;
@@ -934,6 +937,13 @@ public class OrderServiceImpl implements IOrderService {
                         response.getOutTradeNo());
                 log.info("filePath:" + filePath);
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
+                File file = new File(filePath);
+                List<File> fileList = Lists.newArrayList(file);
+                try {
+                    FTPUtils.uploadFile(fileList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Map map = Maps.newHashMap();
                 map.put("orderNo",outTradeNo);
                 map.put("qrPath",PropertiesUtils.getKey("imagesHost")+"qr-"+outTradeNo+".png");
