@@ -68,4 +68,10 @@ public interface OrderMapper {
      * @return
      */
     List<Order> findOrderByOrderNO(Long orderNo);
+
+    /**
+     * 根据创建订单时间和订单的状态进行查询
+     */
+    List<Order> findOrderByCreateTimeAndStatus(@Param("status") Integer status,
+                                               @Param("time") String time);
 }

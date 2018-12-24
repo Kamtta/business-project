@@ -323,6 +323,7 @@ public class OrderServiceImpl implements IOrderService {
         }
 //        修改订单的状态
         order.setStatus(ResponseCode.OrderStatus.SENT_PRODUCT.getCode());
+        order.setSendTime(new Date());
         int result = orderMapper.updateByPrimaryKey(order);
         if(result <= 0){
             return ServerResponse.createServerResponseByError(ResponseCode.SENT_ERROR.getStatus(),ResponseCode.SENT_ERROR.getMsg());
@@ -411,6 +412,34 @@ public class OrderServiceImpl implements IOrderService {
             return ServerResponse.createServerResponseBySuccess(null,Const.TRUE);
         }
         return ServerResponse.createServerResponseBySuccess(null,Const.FAIL_INFORMATION);
+    }
+
+    @Override
+    public void closeOrder(String time) {
+//        查询在一个小时之内没有付款的所有订单
+        List<Order> orderList = orderMapper.findOrderByCreateTimeAndStatus(ResponseCode.OrderStatus.NOT_PAYMENT.getCode(),time);
+//        修改订单的状态
+        if(orderList!=null && orderList.size() > 0){
+            for (Order order:
+                 orderList) {
+                order.setStatus(ResponseCode.OrderStatus.ORDER_CANCEL.getCode());
+                order.setCloseTime(new Date());
+                orderMapper.updateByPrimaryKey(order);
+//                更新商品的库存
+                List<OrderItem> orderItemList = orderItemMapper.selectByOrderNo(order.getOrderNo());
+                if (orderItemList != null && orderItemList.size() > 0) {
+                    for (OrderItem orderItem:
+                         orderItemList) {
+                        Product product = productMapper.selectByPrimaryKey(orderItem.getProductId());
+                        if(product != null){
+                            product.setStock(product.getStock()+orderItem.getQuantity());
+                            productMapper.updateByPrimaryKey(product);
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

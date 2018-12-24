@@ -52,4 +52,6 @@ public class Const {
 
     public static final String AUTO_LOGIN_TOKEN = "autoLoginToken";
 
+    public static final Integer CLOSE_TIME_SCHEDULER = 1;
+
 }

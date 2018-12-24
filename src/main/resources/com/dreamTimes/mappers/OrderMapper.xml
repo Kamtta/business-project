@@ -112,4 +112,14 @@
     payment_time, send_time, close_time, end_time, create_time, update_time
     from e_order where order_no=#{orderNo}
   </select>
+
+
+  <select id="findOrderByCreateTimeAndStatus" parameterType="map" resultMap="BaseResultMap">
+    select id, order_no, user_id, payment, payment_type, status, shipping_id, postage,
+    payment_time, send_time, close_time, end_time, create_time, update_time
+    from e_order where status=#{status} and
+    <![CDATA[
+      create_time < #{time}
+    ]]]>
+  </select>
 </mapper>

@@ -109,4 +109,11 @@ public interface IOrderService {
      * @return
      */
     ServerResponse query_order_pay_status(Long orderNo);
+
+
+    /**
+     * 关闭超时的订单
+     * @param time
+     */
+    void closeOrder(String time);
 }
