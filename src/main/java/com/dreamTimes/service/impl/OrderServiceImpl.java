@@ -418,6 +418,8 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createServerResponseBySuccess(null,Const.FAIL_INFORMATION);
     }
 
+
+    @Transactional
     @Override
     public void closeOrder(String time) {
 //        查询在一个小时之内没有付款的所有订单
@@ -434,12 +436,15 @@ public class OrderServiceImpl implements IOrderService {
                 if (orderItemList != null && orderItemList.size() > 0) {
                     for (OrderItem orderItem:
                          orderItemList) {
-                        Product product = productMapper.selectByPrimaryKey(orderItem.getProductId());
-                        if(product != null){
-                            product.setStock(product.getStock()+orderItem.getQuantity());
-                            productMapper.updateByPrimaryKey(product);
+                        Integer stock = productMapper.findStockByProductId(orderItem.getProductId());
+                        if( stock== null){
                             continue;
                         }
+                        stock = stock+orderItem.getQuantity();
+                        Product product = new Product();
+                        product.setId(orderItem.getProductId());
+                        product.setStock(stock);
+                        productMapper.updateByPrimaryKey(product);
                     }
                 }
             }
