@@ -52,6 +52,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -77,6 +78,7 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     PayInfoMapper payInfoMapper;
 
+    @Transactional
     @Override
     public ServerResponse create(Integer userId, Integer shippingId) {
 //        非空校验
@@ -338,6 +340,7 @@ public class OrderServiceImpl implements IOrderService {
      * @param orderNo
      * @return
      */
+    @Transactional
     @Override
     public ServerResponse pay(Integer userId, Long orderNo) {
 //       非空校验
@@ -355,6 +358,7 @@ public class OrderServiceImpl implements IOrderService {
         return alipay(order);
     }
 
+    @Transactional
     @Override
     public String alipay_callback(Map<String, String> paramMap) {
 //        非空校验
