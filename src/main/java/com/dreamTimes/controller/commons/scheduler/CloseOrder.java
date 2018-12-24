@@ -17,7 +17,7 @@ public class CloseOrder {
     /**
      * 每隔一分钟检查订单的状态，关闭一小时之外没有付款的订单
      */
-    @Scheduled(cron = "0 */1 * * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void closeOrder(){
         Integer hour = Const.CLOSE_TIME_SCHEDULER;
 //        获取时间节点

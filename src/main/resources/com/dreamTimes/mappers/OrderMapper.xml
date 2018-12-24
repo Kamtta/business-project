@@ -120,6 +120,6 @@
     from e_order where status=#{status} and
     <![CDATA[
       create_time < #{time}
-    ]]]>
+    ]]>
   </select>
 </mapper>
