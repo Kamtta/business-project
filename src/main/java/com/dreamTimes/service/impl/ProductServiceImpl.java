@@ -179,7 +179,6 @@ public class ProductServiceImpl implements IProductService {
 //        将图片上传到FTP服务器上
         List<File> fileList = Lists.newArrayList();
         fileList.add(result);
-        result.delete();
         try {
             FTPUtils.uploadFile(fileList);
         } catch (IOException e) {
@@ -188,6 +187,7 @@ public class ProductServiceImpl implements IProductService {
         Map<String,String> result_map = Maps.newHashMap();
         result_map.put("uri",newFileName);
         result_map.put("url",PropertiesUtils.getKey("imagesHost")+newFileName);
+        result.delete();
         return ServerResponse.createServerResponseBySuccess(null,result_map);
     }
 
