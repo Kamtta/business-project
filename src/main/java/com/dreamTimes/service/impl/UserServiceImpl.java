@@ -7,6 +7,7 @@ import com.dreamTimes.dao.UserMapper;
 import com.dreamTimes.pojo.User;
 import com.dreamTimes.service.IUserService;
 import com.dreamTimes.utils.MD5Utils;
+import com.dreamTimes.utils.RedisPoolUtils;
 import com.dreamTimes.utils.TokenCache;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +140,9 @@ public class UserServiceImpl implements IUserService {
 //        生成UUID唯一标识
         String token = UUID.randomUUID().toString();
 //        将UUID放进guava缓冲区
-        TokenCache.set(username,token);
+//        TokenCache.set(username,token);
+//        使用Redis内存数据库代替guava缓存
+        RedisPoolUtils.set(username,token);
         return ServerResponse.createServerResponseBySuccess(null,token);
     }
 
@@ -155,7 +158,9 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createServerResponseByError(ResponseCode.USER_NOT_EXITS.getStatus(),ResponseCode.USER_NOT_EXITS.getMsg());
         }
 //        step3:使用forgetToken校验是否存在横向越权的情况
-        String token = TokenCache.get(username);
+//        String token = TokenCache.get(username);
+//        使用Redis技术代替guava缓存
+        String token = RedisPoolUtils.get(username);
         if (StringUtils.isBlank(token)){
             return ServerResponse.createServerResponseByError(ResponseCode.TOKEN_OUT_DATE.getStatus(),ResponseCode.TOKEN_OUT_DATE.getMsg());
         }
