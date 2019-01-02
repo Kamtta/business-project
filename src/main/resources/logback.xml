@@ -11,9 +11,9 @@
     </appender>
 
     <appender name="business" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>d:/businesslog/business.log</File>
+        <File>/usr/chenjingrong/businesslog/business.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>d:/businesslog/business.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern>/usr/chenjingrong/businesslog/business.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <append>true</append>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
@@ -27,7 +27,7 @@
         <!--<File>d:/mmalllog/error.log</File>-->
         <File>d:/businesslog/error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>d:/businesslog/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern>/usr/chenjingrong/businesslog/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <append>true</append>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
